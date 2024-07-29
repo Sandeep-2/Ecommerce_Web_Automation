@@ -42,7 +42,6 @@ public class Test1 {
             driver.quit();
             return; // Exit the test if the product is sold out.
         }
-        Assert.assertTrue(addToCart.isEnabled(),"This product is sold out");
         addToCart.click();
         WebElement cartValue = driver.findElement(By.cssSelector("#cart-notification-button"));
         wait.until(ExpectedConditions.visibilityOf(cartValue));
@@ -51,6 +50,11 @@ public class Test1 {
             System.out.println("Item added to your cart");
             Assert.assertTrue(cartValue.getText().contains(Integer.toString(cartCount)),"Item has not been added to your cart");
         }
+    }
+
+    @AfterTest
+    public static void closeBrowser(){
+        driver.quit();
     }
 
 }
