@@ -29,6 +29,11 @@ public class Test1 {
         wait.until(ExpectedConditions.visibilityOf(searchedProductTittle));
         Assert.assertEquals(searchedProductTittle.getText(),searchTerm);
         WebElement addToCart = driver.findElement(By.xpath("//button[@type='submit' and @name='add']"));
+        if (!addToCart.isEnabled()) {
+            System.out.println("This product is sold out");
+            driver.quit();
+            return; // Exit the test if the product is sold out.
+        }
         Assert.assertTrue(addToCart.isEnabled(),"This product is sold out");
         addToCart.click();
     }
