@@ -15,18 +15,22 @@ public class Test1 {
     public void navigateToProduct() {
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        String searchTerm = "12 Ti Xelium Skis";
+//        String searchTerm = "12 Ti Xelium Skis";
+        String searchTerm = "88 BSLT Skis";
         driver.get("https://web-playground.ultralesson.com/");
         WebElement searchIcon = driver.findElement(By.cssSelector(".modal__toggle-open"));
         wait.until(ExpectedConditions.elementToBeClickable(searchIcon));
         searchIcon.click();
         WebElement searchBar = driver.findElement(By.cssSelector("#Search-In-Modal"));
         searchBar.sendKeys(searchTerm + Keys.ENTER);
-        WebElement searchedProduct = driver.findElement(By.xpath("//a[contains(text(),'12 Ti Xelium Skis')]"));
+        WebElement searchedProduct = driver.findElement(By.xpath("//a[contains(text(),'"+searchTerm+"')]"));
         searchedProduct.click();
         WebElement searchedProductTittle = driver.findElement(By.cssSelector(".product__title"));
         wait.until(ExpectedConditions.visibilityOf(searchedProductTittle));
         Assert.assertEquals(searchedProductTittle.getText(),searchTerm);
+        WebElement addToCart = driver.findElement(By.xpath("//button[@type='submit' and @name='add']"));
+        Assert.assertTrue(addToCart.isEnabled(),"This product is sold out");
+        addToCart.click();
     }
 
 }
