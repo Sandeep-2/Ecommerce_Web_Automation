@@ -3,6 +3,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -11,13 +12,20 @@ import org.testng.annotations.*;
 import java.time.Duration;
 
 public class Test1 {
+    private static WebDriver driver;
+    private static WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+    @BeforeTest
+    public static void initailizeBrowser(){
+        driver = new ChromeDriver(new ChromeOptions().addArguments("start-maximized"));
+        driver.get("https://web-playground.ultralesson.com/");
+    }
+
     @Test
     public void navigateToProduct() {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 //        String searchTerm = "12 Ti Xelium Skis";
         String searchTerm = "88 BSLT Skis";
-        driver.get("https://web-playground.ultralesson.com/");
+        int cartCount = 0;
         WebElement searchIcon = driver.findElement(By.cssSelector(".modal__toggle-open"));
         wait.until(ExpectedConditions.elementToBeClickable(searchIcon));
         searchIcon.click();
@@ -36,6 +44,13 @@ public class Test1 {
         }
         Assert.assertTrue(addToCart.isEnabled(),"This product is sold out");
         addToCart.click();
+        WebElement cartValue = driver.findElement(By.cssSelector("#cart-notification-button"));
+        wait.until(ExpectedConditions.visibilityOf(cartValue));
+        if(cartValue.isDisplayed()){
+            cartCount++;
+            System.out.println("Item added to your cart");
+            Assert.assertTrue(cartValue.getText().contains(Integer.toString(cartCount)),"Item has not been added to your cart");
+        }
     }
 
 }
