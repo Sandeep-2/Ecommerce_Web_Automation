@@ -47,7 +47,8 @@ public class Test1 {
         wait.until(ExpectedConditions.visibilityOf(cartValue));
         if(cartValue.isDisplayed()){
             cartCount++;
-            System.out.println("Item added to your cart");
+            if(cartValue.getText().contains("View my cart")) System.out.println("Item added to your cart");
+            else System.out.println("Item has not been added to your cart");
             Assert.assertEquals(new CartPage(driver,wait).cartValue(),cartCount,"Item has not been added to your cart");
         }
     }
