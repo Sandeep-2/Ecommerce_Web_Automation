@@ -1,7 +1,10 @@
+import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 public class CartPage {
@@ -23,8 +26,17 @@ public class CartPage {
         }
         WebElement cartValue = driver.findElement(By.xpath("//div[@class='cart-count-bubble']/span[@aria-hidden='true']"));
         int value = Integer.parseInt(cartValue.getText());
-        driver.navigate().back();
         return value;
     }
 
+    public void validateCart(String productName, int productQuantity, double productPrice) {
+        WebElement productNameInCart = driver.findElement(By.xpath("//td[@class='cart-item__details']/a"));
+        wait.until(ExpectedConditions.visibilityOf(productNameInCart));
+        WebElement productQuantityInCart = driver.findElement(By.cssSelector(".quantity__input"));
+        WebElement productPriceInCartElement = driver.findElement(By.xpath("//tbody/tr/td[@class='cart-item__totals right small-hide']//span"));
+//        double productPriceInCart = Double.parseDouble(productPriceInCartElement.getText().trim()
+        Assert.assertTrue(productName.equalsIgnoreCase(productNameInCart.getText().trim()), productName + " is not added to cart");
+        Assert.assertEquals(productQuantity, Integer.parseInt(productQuantityInCart.getAttribute("value")));
+        Assert.assertTrue(productPriceInCartElement.getText().trim().contains(Double.toString(productPrice * productQuantity)));
+    }
 }
