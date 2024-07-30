@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.util.List;
+
 public class CartPage {
 
     private static WebDriver driver;
@@ -38,5 +40,29 @@ public class CartPage {
         Assert.assertTrue(productName.equalsIgnoreCase(productNameInCart.getText().trim()), productName + " is not added to cart");
         Assert.assertEquals(productQuantity, Integer.parseInt(productQuantityInCart.getAttribute("value")));
         Assert.assertTrue(productPriceInCartElement.getText().trim().contains(Double.toString(productPrice * productQuantity)));
+    }
+
+    public void emptyCart() {
+        List<WebElement> deleteProducts = driver.findElements(By.tagName("cart-remove-button"));
+        for (WebElement element : deleteProducts) {
+            element.click();
+        }
+        WebElement cartMessage = driver.findElement(By.xpath("//h1[contains(text(),'Your cart is empty')]"));
+        wait.until(ExpectedConditions.visibilityOf(cartMessage));
+        Assert.assertTrue(cartMessage.isDisplayed());
+
+    }
+
+    public void removePoductFromCart(String productname) {
+        List<WebElement> deleteProducts = driver.findElements(By.tagName("cart-remove-button"));
+        List<WebElement> productNameInCart = driver.findElements(By.xpath("//td[@class='cart-item__details']/a"));
+        int productAt = 0;
+        for (WebElement element : productNameInCart) {
+            if (element.getText().trim().contains(productname)) {
+                deleteProducts.get(productAt).click();
+                break;
+            }
+            productAt++;
+        }
     }
 }

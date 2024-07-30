@@ -56,6 +56,7 @@ public class Test1 {
             System.out.println("Item added to your cart");
             Assert.assertEquals(cartPage.cartValue(), cartCount, "Item has not been added to your cart");
             cartPage.validateCart(productName, productQuantity, productPrice);
+            cartPage.removePoductFromCart(productName);
         }
 
     }
