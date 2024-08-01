@@ -1,6 +1,7 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ProductPage {
@@ -8,13 +9,16 @@ public class ProductPage {
     private static WebDriver driver;
     private static WebDriverWait wait;
 
+    @FindBy(css = ".price-item.price-item--regular")
+    private WebElement productValue;
+
     public ProductPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
     }
 
     public double productPrice() {
-        String value = driver.findElement(By.cssSelector(".price-item.price-item--regular")).getText().trim();
+        String value = productValue.getText().trim();
         int start = value.indexOf(' ') + 1;
         return Double.parseDouble(value.substring(start));
     }

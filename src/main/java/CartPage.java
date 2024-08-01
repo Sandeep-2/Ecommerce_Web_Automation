@@ -49,7 +49,7 @@ public class CartPage {
         }
         WebElement cartMessage = driver.findElement(By.xpath("//h1[contains(text(),'Your cart is empty')]"));
         wait.until(ExpectedConditions.visibilityOf(cartMessage));
-        Assert.assertTrue(cartMessage.isDisplayed());
+        Assert.assertTrue(cartMessage.isDisplayed(),"Cart is not empty after removing products.");
 
     }
 
