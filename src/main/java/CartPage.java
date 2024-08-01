@@ -8,12 +8,20 @@ import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 import java.util.List;
-
+/**
+ * Page Object encapsulating the cart page functionality.
+ */
 public class CartPage {
 
     private static WebDriver driver;
     private static WebDriverWait wait;
 
+    /**
+     * Constructs the Cart Page with the given driver and explicit wait.
+     *
+     * @param driver the WebDriver used for this page
+     * @param wait   the WebDriverWait used for this page
+     */
     public CartPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
